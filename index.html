@@ -19,19 +19,23 @@
         <div class="team team-red"><b id="redScore">0</b><span>RED</span></div>
       </section>
       <div id="gameWrap" class="game-wrap">
-        <canvas id="game" width="960" height="540" aria-label="Cage Kings football pitch"></canvas>
+        <canvas id="game" width="960" height="540"></canvas>
         <section id="startScreen" class="overlay">
           <p class="eyebrow">WELCOME TO THE CAGE</p>
           <h1>STREET FOOTBALL,<br><em>NO LIMITS.</em></h1>
           <p class="intro">Score before time runs out. Keep the ball close, then strike when you see the opening.</p>
           <button id="playButton" class="primary">PLAY MATCH</button>
-          <p class="hint">Move: WASD / arrows · Shoot: Space · Sprint: Shift</p>
+          <p class="hint">Move: WASD / arrows · Pass: P · Shoot: Space · Sprint: Shift</p>
         </section>
         <section id="goalScreen" class="goal-flash" hidden><b>GOAL!</b><span id="goalMessage">BLUE TAKES THE LEAD</span></section>
       </div>
-      <section class="controls" aria-label="Touch controls">
-        <div id="joystick" class="joystick" aria-label="Move player"><div id="stick" class="stick"></div></div>
-        <div class="action-buttons"><button id="sprintButton" class="action sprint">RUN</button><button id="shootButton" class="action shoot">SHOOT</button></div>
+      <section class="controls">
+        <div id="joystick" class="joystick"><div id="stick" class="stick"></div></div>
+        <div class="action-buttons">
+          <button id="sprintButton" class="action sprint">RUN</button>
+          <button id="passButton" class="action pass">PASS</button>
+          <button id="shootButton" class="action shoot">SHOOT</button>
+        </div>
       </section>
       <p class="footer-note">First to dominate the cage wins. Built for touch and keyboard.</p>
     </main>
