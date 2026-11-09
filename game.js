@@ -16,14 +16,23 @@ function start() { reset(); running=true; ui.start.hidden=true; ui.status.textCo
 function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
 function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
 function kickBall() { if (!running || player.kick>0 || dist(player,ball)>46) return; player.kick=.22; const power=(keys.Shift||sprintTouch)?650:500; ball.vx=Math.cos(player.facing)*power; ball.vy=Math.sin(player.facing)*power; }
+function passBall() {
+  if (!running || player.kick>0 || dist(player,ball)>50) return;
+  player.kick=.16;
+  const leadX=mate.x + mate.vx*.25, leadY=mate.y + mate.vy*.25;
+  const angle=Math.atan2(leadY-ball.y,leadX-ball.x);
+  player.facing=angle; ball.vx=Math.cos(angle)*420; ball.vy=Math.sin(angle)*420;
+  ui.status.textContent='NICE PASS'; setTimeout(()=>{ if(running) ui.status.textContent='PLAY'; },650);
+}
 function update(dt) {
   remaining-=dt; if(remaining<=0){ remaining=0; running=false; ui.status.textContent=score[0]===score[1]?'DRAW':'FULL TIME'; ui.start.hidden=false; ui.play.textContent='PLAY AGAIN'; renderUI(); return; }
   let x=(keys.ArrowRight||keys.d?1:0)-(keys.ArrowLeft||keys.a?1:0), y=(keys.ArrowDown||keys.s?1:0)-(keys.ArrowUp||keys.w?1:0); if(touchMove.x||touchMove.y){x=touchMove.x;y=touchMove.y;} const mag=Math.hypot(x,y)||1; const speed=(keys.Shift||sprintTouch)?265:190; player.vx=x/mag*speed;player.vy=y/mag*speed;
   player.x=clamp(player.x+player.vx*dt,44,W-44); player.y=clamp(player.y+player.vy*dt,35,H-35); if(x||y) player.facing=Math.atan2(y,x); player.kick=Math.max(0,player.kick-dt);
-  // Loose ball dribbles in front of the player.
   const d=dist(player,ball); if(d<38 && Math.hypot(ball.vx,ball.vy)<210 && player.kick===0){ const targetX=player.x+Math.cos(player.facing)*29, targetY=player.y+Math.sin(player.facing)*29; ball.vx+=(targetX-ball.x)*18*dt; ball.vy+=(targetY-ball.y)*18*dt; }
-  // Basic defenders and goalkeeper.
-  const chase=ball.x>W*.38?1:-.35; defender.x=clamp(defender.x+(ball.x-defender.x)*dt*.7,410,760); defender.y=clamp(defender.y+(ball.y-defender.y)*dt*.7,80,H-80); keeper.y=clamp(keeper.y+(ball.y-keeper.y)*dt*1.8,190,H-190);
+  const targetMateX=clamp(player.x+110,390,610), targetMateY=clamp(player.y+(player.y<H/2?95:-95),85,H-85);
+  mate.vx=(targetMateX-mate.x)*1.2; mate.vy=(targetMateY-mate.y)*1.2;
+  mate.x+=mate.vx*dt; mate.y+=mate.vy*dt;
+  defender.x=clamp(defender.x+(ball.x-defender.x)*dt*.7,410,760); defender.y=clamp(defender.y+(ball.y-defender.y)*dt*.7,80,H-80); keeper.y=clamp(keeper.y+(ball.y-keeper.y)*dt*1.8,190,H-190);
   ball.x+=ball.vx*dt; ball.y+=ball.vy*dt; ball.vx*=Math.pow(.25,dt); ball.vy*=Math.pow(.25,dt);
   if(ball.y<20||ball.y>H-20){ball.y=clamp(ball.y,20,H-20);ball.vy*=-.72;} if(ball.x<20){ball.x=20;ball.vx*=-.72;}
   if(ball.x>W-12){ if(ball.y>190&&ball.y<350) goal(0); else {ball.x=W-12;ball.vx*=-.72;} }
@@ -38,6 +47,6 @@ function draw(){ ctx.clearRect(0,0,W,H); ctx.fillStyle='#176c54';ctx.fillRect(0,
 }
 function loop(t){if(!running)return;const dt=Math.min(.035,(t-last)/1000);last=t;update(dt);draw();if(running)requestAnimationFrame(loop);}
 const touchMove={x:0,y:0};
-window.addEventListener('keydown',e=>{keys[e.key]=true;if(e.code==='Space'){e.preventDefault();kickBall();}});window.addEventListener('keyup',e=>keys[e.key]=false);ui.play.addEventListener('click',start);
+window.addEventListener('keydown',e=>{keys[e.key]=true;if(e.code==='Space'){e.preventDefault();kickBall();} if(e.key.toLowerCase()==='p'){e.preventDefault();passBall();}});window.addEventListener('keyup',e=>keys[e.key]=false);ui.play.addEventListener('click',start);
 const joy=document.querySelector('#joystick'), stick=document.querySelector('#stick'); function moveTouch(e){const r=joy.getBoundingClientRect(),p=e.touches?e.touches[0]:e;let dx=p.clientX-(r.left+r.width/2),dy=p.clientY-(r.top+r.height/2),d=Math.hypot(dx,dy),max=32;if(d>max){dx*=max/d;dy*=max/d;} touchMove.x=dx/max;touchMove.y=dy/max;stick.style.transform=`translate(${dx}px,${dy}px)`;} joy.addEventListener('pointerdown',e=>{joy.setPointerCapture(e.pointerId);moveTouch(e)});joy.addEventListener('pointermove',e=>{if(e.buttons)moveTouch(e)});joy.addEventListener('pointerup',()=>{touchMove.x=touchMove.y=0;stick.style.transform=''});
-const shoot=document.querySelector('#shootButton'),run=document.querySelector('#sprintButton');shoot.addEventListener('pointerdown',kickBall);run.addEventListener('pointerdown',()=>sprintTouch=true);run.addEventListener('pointerup',()=>sprintTouch=false);draw();
+const shoot=document.querySelector('#shootButton'),pass=document.querySelector('#passButton'),run=document.querySelector('#sprintButton');shoot.addEventListener('pointerdown',kickBall);pass.addEventListener('pointerdown',passBall);run.addEventListener('pointerdown',()=>sprintTouch=true);run.addEventListener('pointerup',()=>sprintTouch=false);draw();
