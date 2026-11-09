@@ -16,3 +16,81 @@ canvas { display:block; width:100%; aspect-ratio:16/9; background:#1c6f58; }
 @media (pointer:coarse), (max-width:700px) { .game-shell { padding:8px 8px 18px; } .controls { display:flex; } .footer-note { display:none; } .hint { display:none; } header { height:44px; } .hud { margin:0 0 6px; } }
 .pass { width:60px; height:60px; background:#6c43ae; box-shadow:0 4px #3f216f; }
 [hidden] { display:none !important; }
+.match-card {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  margin:8px 0 14px;
+}
+
+.menu-team {
+  width:130px;
+  padding:10px 8px;
+  border-radius:10px;
+  text-align:center;
+  background:#151c2e;
+}
+
+.menu-team strong,
+.menu-team small {
+  display:block;
+}
+
+.menu-team strong {
+  font-size:12px;
+}
+
+.menu-team small {
+  margin-top:5px;
+  color:#aeb8cc;
+  font-size:9px;
+  letter-spacing:.1em;
+}
+
+.blue-menu {
+  border:1px solid #39aef4;
+}
+
+.red-menu {
+  border:1px solid #e85360;
+}
+
+.versus {
+  color:#f7ba2f;
+  font-size:18px;
+}
+
+.roster {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:6px;
+  max-width:330px;
+  margin-bottom:14px;
+}
+
+.roster p {
+  width:100%;
+  margin:0 0 2px;
+  color:#f7ba2f;
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:.13em;
+}
+
+.roster span {
+  padding:5px 7px;
+  border-radius:5px;
+  background:#18233a;
+  color:#d9e2f2;
+  font-size:10px;
+}
+
+.match-info {
+  color:#aeb8cc;
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:.1em;
+  margin:0 0 18px;
+}
