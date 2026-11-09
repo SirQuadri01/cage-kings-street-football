@@ -94,3 +94,56 @@ function draw(){
 function loop(t){if(!run)return;let dt=Math.min(.035,(t-last)/1000);last=t;update(dt);draw();if(run)requestAnimationFrame(loop)}
 addEventListener("keydown",e=>{k[e.key]=true;if(e.code==="Space"){e.preventDefault();shoot()}if(e.key.toLowerCase()==="p")pass();if(e.key.toLowerCase()==="e")switchPlayer();if(e.key.toLowerCase()==="t")tackle();if(e.key.toLowerCase()==="q")tackle(true)});
 addEventListener("keyup",e=>k[e.key]=false);ui.play.addEventListener("click",start);draw();
+const joy=document.querySelector("#joystick");
+const stick=document.querySelector("#stick");
+
+function moveTouch(e){
+  const r=joy.getBoundingClientRect();
+  const p=e.touches ? e.touches[0] : e;
+  let dx=p.clientX-r.left-r.width/2;
+  let dy=p.clientY-r.top-r.height/2;
+  const distance=Math.hypot(dx,dy);
+  const max=32;
+
+  if(distance>max){
+    dx=dx/distance*max;
+    dy=dy/distance*max;
+  }
+
+  k.ArrowRight=dx>10;
+  k.ArrowLeft=dx<-10;
+  k.ArrowDown=dy>10;
+  k.ArrowUp=dy<-10;
+  stick.style.transform=`translate(${dx}px,${dy}px)`;
+}
+
+joy.addEventListener("pointerdown",e=>{
+  joy.setPointerCapture(e.pointerId);
+  moveTouch(e);
+});
+joy.addEventListener("pointermove",e=>{
+  if(e.buttons) moveTouch(e);
+});
+joy.addEventListener("pointerup",()=>{
+  k.ArrowRight=k.ArrowLeft=k.ArrowDown=k.ArrowUp=false;
+  stick.style.transform="";
+});
+
+document.querySelector("#shootButton").addEventListener("pointerdown",shoot);
+document.querySelector("#passButton").addEventListener("pointerdown",pass);
+document.querySelector("#tackleButton").addEventListener("pointerdown",()=>tackle());
+document.querySelector("#sprintButton").addEventListener("pointerdown",()=>k.Shift=true);
+document.querySelector("#sprintButton").addEventListener("pointerup",()=>k.Shift=false);
+
+c.addEventListener("pointerdown",e=>{
+  const r=c.getBoundingClientRect();
+  const px=(e.clientX-r.left)*W/r.width;
+  const py=(e.clientY-r.top)*H/r.height;
+
+  blue.forEach((player,index)=>{
+    if(Math.hypot(player.x-px,player.y-py)<45){
+      active=index;
+      say(player.name+" SELECTED");
+    }
+  });
+});
