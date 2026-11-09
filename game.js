@@ -88,7 +88,28 @@ function draw(){
  for(let i=0;i<8;i++){x.fillStyle=i%2?"#20775d":"#196b53";x.fillRect(i*120,0,120,H)}
  x.strokeStyle="#d9ffe8aa";x.lineWidth=4;x.strokeRect(26,26,W-52,H-52);x.beginPath();x.arc(W/2,H/2,70,0,7);x.stroke();x.beginPath();x.moveTo(W/2,26);x.lineTo(W/2,H-26);x.stroke();x.strokeRect(26,180,79,180);x.strokeRect(W-105,180,79,180);
  red.forEach(p=>player(p));blue.forEach((p,i)=>player(p,i===active));
- x.fillStyle="#f8f5e9";x.beginPath();x.arc(ball.x,ball.y,9,0,7);x.fill();
+ x.save();
+x.translate(ball.x,ball.y);
+x.fillStyle="#ffffff";
+x.beginPath();
+x.arc(0,0,14,0,Math.PI*2);
+x.fill();
+x.strokeStyle="#1c2430";
+x.lineWidth=2;
+x.stroke();
+
+x.fillStyle="#1c2430";
+x.beginPath();
+x.arc(0,0,5,0,Math.PI*2);
+x.fill();
+
+x.beginPath();
+x.arc(-6,-6,2.5,0,Math.PI*2);
+x.arc(7,-4,2.5,0,Math.PI*2);
+x.arc(5,7,2.5,0,Math.PI*2);
+x.arc(-7,6,2.5,0,Math.PI*2);
+x.fill();
+x.restore();
  x.fillStyle="#07101ad9";x.fillRect(14,12,180,40);x.fillStyle="white";x.font="bold 13px Arial";x.textAlign="left";x.fillText("CONTROL: "+me().name,25,37);
 }
 function loop(t){if(!run)return;let dt=Math.min(.035,(t-last)/1000);last=t;update(dt);draw();if(run)requestAnimationFrame(loop)}
