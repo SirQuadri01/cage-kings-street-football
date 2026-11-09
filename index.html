@@ -12,10 +12,7 @@
     <header>
       <div class="brand">
         <span>CK</span>
-        <div>
-          <strong>CAGE KINGS</strong>
-          <small>STREET FOOTBALL</small>
-        </div>
+        <div><strong>CAGE KINGS</strong><small>STREET FOOTBALL</small></div>
       </div>
       <button id="soundButton" class="icon-button">♪</button>
     </header>
@@ -29,34 +26,53 @@
     <div id="gameWrap" class="game-wrap">
       <canvas id="game" width="960" height="540"></canvas>
 
-      <section id="startScreen" class="overlay">
-        <p class="eyebrow">CAGE KINGS PRESENTS</p>
-        <h1>STREET FOOTBALL,<br><em>NO LIMITS.</em></h1>
+      <section id="homeScreen" class="overlay home-menu">
+        <p class="eyebrow">WELCOME TO THE CAGE</p>
+        <h1>CAGE KINGS<br><em>STREET FOOTBALL</em></h1>
+        <p class="intro">Fast five-a-side football. Rule the street, score goals, and become a Cage King.</p>
 
-        <div class="match-card">
-          <div class="menu-team blue-menu">
-            <strong>CAGE KINGS FC</strong>
-            <small>YOUR TEAM</small>
-          </div>
-          <b class="versus">VS</b>
-          <div class="menu-team red-menu">
-            <strong>RED BLOCK FC</strong>
-            <small>OPPONENT</small>
-          </div>
+        <div class="menu-buttons">
+          <button class="primary" onclick="document.getElementById('homeScreen').hidden=true">START GAME</button>
+          <button class="menu-button" onclick="document.getElementById('homeScreen').hidden=true;document.getElementById('howToScreen').hidden=false">HOW TO PLAY</button>
+          <button class="menu-button" onclick="document.getElementById('homeScreen').hidden=true;document.getElementById('controlsScreen').hidden=false">CONTROLS</button>
+          <button class="menu-button" onclick="document.getElementById('homeScreen').hidden=true;document.getElementById('playersScreen').hidden=false">PLAYERS</button>
         </div>
+      </section>
 
-        <div class="roster">
-          <p>YOUR FIVE PLAYERS</p>
-          <span>1 KEEPER</span>
-          <span>2 BLUE 2</span>
-          <span>3 BLUE 3</span>
-          <span>4 BLUE 4</span>
-          <span>5 BLUE 5</span>
-        </div>
+      <section id="howToScreen" class="overlay guide-screen" hidden>
+        <p class="eyebrow">HOW TO PLAY</p>
+        <h2>WIN THE CAGE</h2>
+        <p>Score more goals than Red Block FC in five minutes.</p>
+        <p>Each team has five players: one goalkeeper and four outfield players.</p>
+        <p>After every goal, the team that conceded must restart with a pass from the centre.</p>
+        <button class="primary" onclick="document.getElementById('howToScreen').hidden=true;document.getElementById('homeScreen').hidden=false">BACK</button>
+      </section>
 
-        <p class="match-info">5 MINUTES · FIRST PASS STARTS THE MATCH</p>
+      <section id="controlsScreen" class="overlay guide-screen" hidden>
+        <p class="eyebrow">CONTROLS</p>
+        <h2>TAKE CONTROL</h2>
+        <p><b>PC:</b> WASD or arrows to move · E to switch player</p>
+        <p><b>PC:</b> P pass · Space shoot · T tackle · Q strong tackle · Shift sprint</p>
+        <p><b>ANDROID:</b> use the left stick to move, then tap RUN, PASS, SHOOT, or TACKLE.</p>
+        <p>Tap a Blue player on the pitch to control them.</p>
+        <button class="primary" onclick="document.getElementById('controlsScreen').hidden=true;document.getElementById('homeScreen').hidden=false">BACK</button>
+      </section>
+
+      <section id="playersScreen" class="overlay guide-screen" hidden>
+        <p class="eyebrow">YOUR TEAM</p>
+        <h2>FIVE CAGE KINGS</h2>
+        <p><b>1 KEEPER:</b> protects the goal and restarts play.</p>
+        <p><b>2–5 OUTFIELD:</b> pass, dribble, tackle, and score.</p>
+        <p>All players begin with equal ability. Future training improves each player separately.</p>
+        <p><b>DRIBBLING:</b> move close to the ball. Sprint carefully, pass to teammates in space, and shoot near goal.</p>
+        <button class="primary" onclick="document.getElementById('playersScreen').hidden=true;document.getElementById('homeScreen').hidden=false">BACK</button>
+      </section>
+
+      <section id="startScreen" class="overlay" hidden>
+        <p class="eyebrow">MATCH READY</p>
+        <h1>CAGE KINGS<br><em>VS RED BLOCK</em></h1>
+        <p class="intro">Five minutes. Five players per team. First pass starts the match.</p>
         <button id="playButton" class="primary">START MATCH</button>
-        <p class="hint">PC: WASD move · E switch player · P pass · Space shoot · T tackle</p>
       </section>
 
       <section id="goalScreen" class="goal-flash" hidden>
